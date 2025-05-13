@@ -18,7 +18,7 @@ class MessageSent implements ShouldBroadcast
      */
     public function __construct(protected Chat $chat)
     {
-        logger()->debug('MessageSent called ');
+        //
     }
 
     /**
@@ -26,8 +26,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        logger()->debug("Send {$this->chat->sender_id} to {$this->chat->receiver_id}: '{$this->chat->message}'");
-
         return [
             new PrivateChannel('Chat.'.$this->chat->receiver_id),
         ];

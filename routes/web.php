@@ -12,7 +12,7 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    Route::view('friends', 'friends.list')->name('friends');
+    Route::view('chats', 'chats')->name('chats');
 
     Route::redirect('settings', 'settings/profile');
 

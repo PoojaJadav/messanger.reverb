@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class FriendList extends Component
+class Chat extends Component
 {
     #[URL]
     public ?User $receiver;
@@ -19,7 +19,7 @@ class FriendList extends Component
 
     public function render()
     {
-        return view('livewire.friend-list',
+        return view('livewire.chat',
             [
                 'users' => User::whereNot('id', auth()->id())->get(),
                 'sender' => Auth::user(),

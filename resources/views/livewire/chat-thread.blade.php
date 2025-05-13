@@ -2,26 +2,42 @@
     <div class="p-5">
         <ul role="list" class="space-y-6">
             @foreach($chats as $chat)
-                <li class="relative flex gap-x-4">
-                    <div class="absolute top-0 -bottom-6 left-0 flex w-6 justify-center">
-                        <div class="w-px bg-gray-200"></div>
-                    </div>
-                    <flux:avatar size="xs" :name="$chat->sender->name"/>
-                    <div class="flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset">
-                        <div class="flex justify-between gap-x-4">
+                @php $isSender = $chat->sender_id === auth()->id(); @endphp
+                <li @class(['relative flex gap-x-4',
+                            'justify-end' => $isSender,
+                        ])>
+                    <!-- Avatar -->
+                    @if(!$isSender)
+                        <flux:avatar size="xs" :name="$chat->sender->name"/>
+                    @endif
+
+                    <!-- Chat Bubble -->
+                    <div @class(['flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset',
+                                'bg-blue-50 text-right' => $isSender,
+                            ])>
+                        <div @class(['flex gap-x-4 justify-between',
+                                    'flex-row-reverse' => $isSender,
+                                ])>
                             <div class="py-0.5 text-xs/5 text-gray-500">
                                 <span class="font-medium text-gray-900">
                                     {{ $chat->sender->name }}
                                 </span>
                             </div>
-                            <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs/5 text-gray-500">
+                            <time datetime="{{ $chat->created_at }}" class="flex-none py-0.5 text-xs/5 text-gray-500">
                                 {{ $chat->created_at->diffForHumans() }}
                             </time>
                         </div>
-                        <p class="text-sm/6 text-gray-500">
+                        <p @class(['text-sm/6 text-gray-500',
+                                   'text-right' => $isSender,
+                                ])>
                             {{ $chat->message }}
                         </p>
                     </div>
+
+                    <!-- Avatar for Sender -->
+                    @if($isSender)
+                        <flux:avatar size="xs" :name="$chat->sender->name"/>
+                    @endif
                 </li>
             @endforeach
         </ul>

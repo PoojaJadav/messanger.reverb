@@ -6,7 +6,7 @@
                 <ul role="list" class="divide-y divide-gray-100">
                     @foreach($users as $user)
                         <li @class(["relative py-5 dark:hover:bg-white/[7%] hover:bg-zinc-800/5 ",
-"bg-white/[7%] bg-zinc-800/5" => $user->id == $receiver?->id
+                                "bg-white/[7%] bg-zinc-800/5" => $user->id == $receiver?->id
                                    ])>
                             <div class="px-4 sm:px-6 lg:px-8">
                                 <div class="mx-auto flex max-w-4xl justify-between gap-x-6">
@@ -44,7 +44,7 @@
             </div>
             <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 col-span-2">
                 @if($receiver)
-                    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6 lg:sticky">
+                    <div class="border-b border-gray-200 py-5 sm:px-6">
                         <div class="-mt-4 -ml-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
                             <div class="mt-4 ml-4">
                                 <h3 class="text-base font-semibold text-gray-900">

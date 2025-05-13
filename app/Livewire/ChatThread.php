@@ -12,9 +12,7 @@ use Livewire\Component;
 class ChatThread extends Component
 {
     public User $sender;
-
     public User $receiver;
-
     public object $chats;
 
     #[Validate('required|min:3')]
@@ -22,45 +20,48 @@ class ChatThread extends Component
 
     public function mount(): void
     {
-        $this->chats = $this->getChats();
+        $this->loadChats();
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
         $this->validate();
 
-        $chat = Chat::create(
-            $this->only(['message']) + [
-                'sender_id' => $this->sender->id,
-                'receiver_id' => $this->receiver->id,
-            ]
-        );
-
-        broadcast(new MessageSent($chat))->toOthers();
+        $chat = $this->createChat();
+        $this->broadcastMessage($chat);
 
         $this->reset('message');
         $this->chats->push($chat);
     }
 
     #[On('echo-private:Chat.{sender.id},MessageSent')]
-    public function receiveNewMessage()
+    public function receiveNewMessage(): void
     {
-        $this->chats = $this->getChats();
+        $this->loadChats();
     }
 
-    public function getChats()
+    private function loadChats(): void
     {
-        return Chat::query()
-            ->where(function ($query) {
-                $query->where('chats.sender_id', $this->sender->id)
-                    ->orWhere('chats.receiver_id', $this->sender->id);
-            })
-            ->where(function ($query) {
-                $query->where('chats.sender_id', $this->receiver->id)
-                    ->orWhere('chats.receiver_id', $this->receiver->id);
-            })
-            ->with('sender:id,name', 'receiver:id,name')
+        $this->chats = Chat::with('sender:id,name', 'receiver:id,name')
+            ->where(fn ($query) => $query
+                ->whereIn('chats.sender_id', [$this->sender->id, $this->receiver->id])
+                ->whereIn('chats.receiver_id', [$this->sender->id, $this->receiver->id])
+            )
             ->get();
+    }
+
+    private function createChat(): Chat
+    {
+        return Chat::create([
+            'message' => $this->message,
+            'sender_id' => $this->sender->id,
+            'receiver_id' => $this->receiver->id,
+        ]);
+    }
+
+    private function broadcastMessage(Chat $chat): void
+    {
+        broadcast(new MessageSent($chat))->toOthers();
     }
 
     public function render()
