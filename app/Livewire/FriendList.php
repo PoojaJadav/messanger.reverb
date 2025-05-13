@@ -10,12 +10,13 @@ use Livewire\Component;
 class FriendList extends Component
 {
     #[URL]
-    public null|User $receiver;
+    public ?User $receiver;
 
     public function setReceiver(User $receiver): void
     {
         $this->receiver = $receiver;
     }
+
     public function render()
     {
         return view('livewire.friend-list',

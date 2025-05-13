@@ -5,7 +5,7 @@
                 class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <ul role="list" class="divide-y divide-gray-100">
                     @foreach($users as $user)
-                        <li @class(["relative py-5 dark:hover:bg-white/[7%] hover:bg-zinc-800/5",
+                        <li @class(["relative py-5 dark:hover:bg-white/[7%] hover:bg-zinc-800/5 ",
 "bg-white/[7%] bg-zinc-800/5" => $user->id == $receiver?->id
                                    ])>
                             <div class="px-4 sm:px-6 lg:px-8">
@@ -44,7 +44,20 @@
             </div>
             <div class="relative aspect-video rounded-xl border border-neutral-200 dark:border-neutral-700 col-span-2">
                 @if($receiver)
-                    <livewire:chat-thread :sender="$sender" :receiver="$receiver"/>
+                    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6 lg:sticky">
+                        <div class="-mt-4 -ml-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+                            <div class="mt-4 ml-4">
+                                <h3 class="text-base font-semibold text-gray-900">
+                                    {{ $receiver->name }}
+                                </h3>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    {{ $receiver->email }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <livewire:chat-thread :sender="$sender" :receiver="$receiver" wire:key="{{ $receiver->id }}"/>
                 @endif
             </div>
         </div>
