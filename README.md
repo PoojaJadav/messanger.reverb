@@ -103,7 +103,7 @@ php artisan reverb:start --host=127.0.0.1 --port=9000
 ## 📝 **Usage**
 
 1. Register or log in to your account.
-2. Navigate to the **Chat** tab.
+2. Navigate to the **Chats** tab.
 3. Select a user from the list to start chatting.
 4. Send and receive messages in real-time.
 
